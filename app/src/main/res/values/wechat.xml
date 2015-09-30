@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="wechat.notification.symbol">: [微信红包]</string>
+    <string name="wechat.chat_env.symbol">领取红包</string>
+    <string name="wechat.open_env_button.symbol">拆红包</string>
+
+</resources>

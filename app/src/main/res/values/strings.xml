@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">WechatRedEnv</string>
+    <string name="accessibility_description">A service for wechat fast get RedEnv</string>
+</resources>
