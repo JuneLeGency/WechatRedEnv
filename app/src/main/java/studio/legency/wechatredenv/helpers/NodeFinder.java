@@ -90,6 +90,12 @@ public class NodeFinder {
 
     @Pref
     Setting_ setting_;
+
+    /**
+     * TODO  如何在所有的hash 都相同的情况下判断当前的红包有没有被打开过 寻找标志位
+     * @param hash
+     * @return
+     */
     boolean isOpened(String hash){
         if(setting_.use_His().get()){
             List<WechatRedEnvHis> a = WechatRedEnvHis.find(WechatRedEnvHis.class, "hash = ?", "" + hash);
