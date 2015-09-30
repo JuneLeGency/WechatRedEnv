@@ -128,13 +128,15 @@ public class WechatEventHelper {
         String  name = title.getText().toString();
         LogUtils.d("当前在"+name+"页面");
         List<AccessibilityNodeInfo> close_envs = nodeFinder.getWechatRedEnvelopeNodes(node,name);
-        LogUtils.d("发现"+close_envs.size()+"个新红包");
-        //逆序打开
-        for(int i = close_envs.size()-1;i>=0;i--){
-            AccessibilityNodeInfo env = close_envs.get(i);
-            openEnv(env,name);
+        if(close_envs!=null){
+            LogUtils.d("发现"+close_envs.size()+"个新红包");
+            //逆序打开
+            for(int i = close_envs.size()-1;i>=0;i--){
+                AccessibilityNodeInfo env = close_envs.get(i);
+                openEnv(env,name);
+            }
+            close_envs.clear();
         }
-        close_envs.clear();
 //        for (WechatRedEnvHis env :close_envs){
 //            openEnv(env);
 //        }
