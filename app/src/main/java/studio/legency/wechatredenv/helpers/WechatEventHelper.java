@@ -42,7 +42,7 @@ public class WechatEventHelper {
 
     public void handleEvent(AccessibilityEvent event) {
         LogUtils.d(event);
-        if(BuildConfig.BUILD_TYPE.equals("view_test") ){
+        if(Common.is_view_test()){
             if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED||
                     event.getEventType() ==  AccessibilityEvent.TYPE_VIEW_CLICKED){
                 AccessibilityNodeInfo nodeInfo = event.getSource();

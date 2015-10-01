@@ -6,6 +6,7 @@ import android.content.Intent;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
 
+import studio.legency.wechatredenv.BuildConfig;
 import studio.legency.wechatredenv.configs.WechatInfo;
 
 /**
@@ -16,6 +17,10 @@ public class Common {
 
     @RootContext
     Context context;
+
+    static public boolean is_view_test(){
+        return BuildConfig.BUILD_TYPE.equals("view_test");
+    }
 
     public void goHome() {
         Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
