@@ -3,10 +3,9 @@
     android:accessibilityEventTypes="typeAllMask"
     android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="true"
-    android:notificationTimeout="10"
     android:description="@string/accessibility_description"
-    android:settingsActivity=".activities.MainActivity_" />
-<!-- typeAllMask typeViewClicked typeViewFocused 
+    android:notificationTimeout="10"
+    android:settingsActivity=".activities.MainActivity_" /><!-- typeAllMask typeViewClicked typeViewFocused
     android:accessibilityFeedbackType="feedbackSpoken"
         android:canRequestTouchExplorationMode="true"
     android:canRequestEnhancedWebAccessibility="true"

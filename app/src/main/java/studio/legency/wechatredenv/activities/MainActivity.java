@@ -10,6 +10,6 @@ import studio.legency.wechatredenv.R;
  * Created by Administrator on 2015/9/30.
  */
 @EActivity(R.layout.activity_main)
-public class MainActivity extends Activity{
+public class MainActivity extends Activity {
 
 }

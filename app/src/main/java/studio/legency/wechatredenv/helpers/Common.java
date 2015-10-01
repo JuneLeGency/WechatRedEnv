@@ -17,7 +17,7 @@ public class Common {
     @RootContext
     Context context;
 
-    public void goHome(){
+    public void goHome() {
         Intent mHomeIntent = new Intent(Intent.ACTION_MAIN);
         mHomeIntent.addCategory(Intent.CATEGORY_HOME);
         mHomeIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -25,7 +25,7 @@ public class Common {
         context.startActivity(mHomeIntent);
     }
 
-    public void goChat(){
+    public void goChat() {
         //无效
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
