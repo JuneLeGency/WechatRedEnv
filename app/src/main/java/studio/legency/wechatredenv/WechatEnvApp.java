@@ -8,6 +8,6 @@ import org.androidannotations.annotations.EApplication;
  * Created by Administrator on 2015/9/30.
  */
 @EApplication
-public class WechatEnvApp extends SugarApp{
+public class WechatEnvApp extends SugarApp {
 
 }

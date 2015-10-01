@@ -34,56 +34,58 @@ public class WechatEventHelper {
 
     @Bean
     Common common;
+    @StringRes
+    String wechat_notification_symbol;
+    @Pref
+    Setting_ setting_;
 
-    public void handleEvent(AccessibilityEvent event){
+    public void handleEvent(AccessibilityEvent event) {
         LogUtils.d(event);
         if (event == null)
             return;
         if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {
             handleNotificationChange(event);
-        }else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED){
+        } else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
             AccessibilityNodeInfo nodeInfo = event.getSource();
             if (nodeInfo == null) return;
             CharSequence currentActivityName = event.getClassName();
             if (WechatInfo.main_page.equals(currentActivityName)) {
                 // 聊天以及主页
                 handleChatPage(nodeInfo);
-            }
-            else if (WechatInfo.env_page.equals(currentActivityName)) {
+            } else if (WechatInfo.env_page.equals(currentActivityName)) {
                 //打开红包主页
                 LogUtils.d("红包外页");
                 handleLuckyMoneyReceivePage(nodeInfo);
-            }
-            else if (WechatInfo.env_detail_page.equals(currentActivityName)) {
-                    handleLuckyMoneyDetailPage(nodeInfo);
-            }
-            else {
+            } else if (WechatInfo.env_detail_page.equals(currentActivityName)) {
+                handleLuckyMoneyDetailPage(nodeInfo);
+            } else {
                 handleChatPage(nodeInfo);
             }
-        }else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED){
+        } else if (event.getEventType() == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED) {
             AccessibilityNodeInfo nodeInfo = event.getSource();
             if (nodeInfo == null) return;
             handleChatPage(nodeInfo);
         }
 
     }
+
     public void handleLuckyMoneyDetailPage(AccessibilityNodeInfo node) {
         if (node == null)
             return;
         CharSequence money = nodeFinder.getWechatRedEnvelopeMoney(node);
-        if(setting_.use_His().get())
+        if (setting_.use_His().get())
             goBack(node);
         else
             common.goHome();
     }
 
-    public void goBack(AccessibilityNodeInfo node){
+    public void goBack(AccessibilityNodeInfo node) {
         AccessibilityNodeInfo backButton = nodeFinder.getWechatRedBack(node);
         clickNode(backButton);
     }
 
-    public void goMessage(AccessibilityNodeInfo node){
-        AccessibilityNodeInfo messageButton= nodeFinder.findNodeInfoOneByText(node, "留言", true);
+    public void goMessage(AccessibilityNodeInfo node) {
+        AccessibilityNodeInfo messageButton = nodeFinder.findNodeInfoOneByText(node, "留言", true);
         clickNode(messageButton);
     }
 
@@ -101,9 +103,6 @@ public class WechatEventHelper {
         }
     }
 
-    @StringRes
-    String wechat_notification_symbol;
-
     private void handleNotificationChange(AccessibilityEvent event) {
 
         if (event.getParcelableData() instanceof Notification) {
@@ -118,22 +117,20 @@ public class WechatEventHelper {
         }
     }
 
-    @Pref
-    Setting_ setting_;
     public void handleChatPage(AccessibilityNodeInfo node) {
         if (node == null)
             return;
         AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneById(node, WechatInfo.title_id, true);
-        if(title==null)return;
-        String  name = title.getText().toString();
-        LogUtils.d("当前在"+name+"页面");
-        List<AccessibilityNodeInfo> close_envs = nodeFinder.getWechatRedEnvelopeNodes(node,name);
-        if(close_envs!=null){
-            LogUtils.d("发现"+close_envs.size()+"个新红包");
+        if (title == null) return;
+        String name = title.getText().toString();
+        LogUtils.d("当前在" + name + "页面");
+        List<AccessibilityNodeInfo> close_envs = nodeFinder.getWechatRedEnvelopeNodes(node, name);
+        if (close_envs != null) {
+            LogUtils.d("发现" + close_envs.size() + "个新红包");
             //逆序打开
-            for(int i = close_envs.size()-1;i>=0;i--){
+            for (int i = close_envs.size() - 1; i >= 0; i--) {
                 AccessibilityNodeInfo env = close_envs.get(i);
-                openEnv(env,name);
+                openEnv(env, name);
             }
             close_envs.clear();
         }
@@ -142,17 +139,17 @@ public class WechatEventHelper {
 //        }
     }
 
-    void openEnv(AccessibilityNodeInfo env,String name){
+    void openEnv(AccessibilityNodeInfo env, String name) {
         int hash = env.hashCode();
-        if(clickNode(env.getParent())&&setting_.use_His().get()){
+        if (clickNode(env.getParent()) && setting_.use_His().get()) {
             LogUtils.d("save hashCode:" + name + hash);
             new WechatRedEnvHis(name + hash).save();
         }
 
     }
 
-    public static void openNotification(AccessibilityEvent event) {
-        if( !(event.getParcelableData() instanceof Notification)) {
+    public void openNotification(AccessibilityEvent event) {
+        if (!(event.getParcelableData() instanceof Notification)) {
             return;
         }
         Notification notification = (Notification) event.getParcelableData();
@@ -164,13 +161,13 @@ public class WechatEventHelper {
         }
     }
 
-    boolean clickNode(AccessibilityNodeInfo nodeInfo){
+    boolean clickNode(AccessibilityNodeInfo nodeInfo) {
         if (nodeInfo != null) {
             boolean success = nodeInfo.performAction(AccessibilityNodeInfo.ACTION_CLICK);
             nodeInfo.recycle();
             return success;
         } else {// this page is loading red envelope data, no action
-            return  false;
+            return false;
         }
     }
 }

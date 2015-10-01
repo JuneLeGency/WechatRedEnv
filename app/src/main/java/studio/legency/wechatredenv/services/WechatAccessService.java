@@ -21,7 +21,7 @@ import studio.legency.wechatredenv.helpers.WechatEventHelper;
  * Created by Administrator on 2015/9/30.
  */
 @EService
-public class WechatAccessService extends AccessibilityService{
+public class WechatAccessService extends AccessibilityService {
 
     @Bean
     WechatEventHelper wechatEventHelper;
@@ -50,20 +50,20 @@ public class WechatAccessService extends AccessibilityService{
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    void configService(){
+    void configService() {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         if (accessibilityServiceInfo == null)
             accessibilityServiceInfo = new AccessibilityServiceInfo();
 //        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED|AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED|AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED | AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         accessibilityServiceInfo.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
-        accessibilityServiceInfo.packageNames = new String[] { WechatInfo.package_name };
+        accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name};
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;
         accessibilityServiceInfo.notificationTimeout = 10;
         setServiceInfo(accessibilityServiceInfo);
         // 4.0之后可通过xml进行配置,以下加入到Service里面
-		/*
-		 * <meta-data android:name="android.accessibilityservice"
+        /*
+         * <meta-data android:name="android.accessibilityservice"
 		 * android:resource="@xml/accessibility" />
 		 */
     }
