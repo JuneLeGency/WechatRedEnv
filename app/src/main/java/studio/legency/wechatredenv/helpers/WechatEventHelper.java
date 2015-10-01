@@ -15,6 +15,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.List;
 
+import studio.legency.wechatredenv.BuildConfig;
 import studio.legency.wechatredenv.configs.Setting_;
 import studio.legency.wechatredenv.configs.WechatInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
@@ -41,6 +42,16 @@ public class WechatEventHelper {
 
     public void handleEvent(AccessibilityEvent event) {
         LogUtils.d(event);
+        if(BuildConfig.BUILD_TYPE.equals("view_test") ){
+            if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED||
+                    event.getEventType() ==  AccessibilityEvent.TYPE_VIEW_CLICKED){
+                AccessibilityNodeInfo nodeInfo = event.getSource();
+                if (nodeInfo == null) return;
+                nodeFinder.debugNode(nodeInfo);
+            }
+            return;
+        }
+
         if (event == null)
             return;
         if (event.getEventType() == AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED) {
@@ -90,11 +101,14 @@ public class WechatEventHelper {
     }
 
     private void handleLuckyMoneyReceivePage(AccessibilityNodeInfo nodeInfo) {
+        nodeFinder.debugNode(nodeInfo);
         AccessibilityNodeInfo nodeDetail = nodeFinder
                 .getWechatRedEnvelopeOpenDetailNode(nodeInfo);
         if (nodeDetail != null) {// the red envelope already opened
-            LogUtils.d("开过了群红包");
-            common.goHome();
+            LogUtils.d("手慢了,开过了群红包");
+            AccessibilityNodeInfo close_btn = nodeFinder
+                    .getWechatRedEnvelopeCloseNode(nodeInfo);
+            clickNode(close_btn);
         } else {
             LogUtils.d("新的红包");
             AccessibilityNodeInfo nodeOpen = nodeFinder
@@ -102,6 +116,8 @@ public class WechatEventHelper {
             clickNode(nodeOpen);
         }
     }
+
+
 
     private void handleNotificationChange(AccessibilityEvent event) {
 
@@ -121,7 +137,10 @@ public class WechatEventHelper {
         if (node == null)
             return;
         AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneById(node, WechatInfo.title_id, true);
-        if (title == null) return;
+        if (title == null) {
+            LogUtils.d("不在聊天页面返回");
+            return;
+        }
         String name = title.getText().toString();
         LogUtils.d("当前在" + name + "页面");
         List<AccessibilityNodeInfo> close_envs = nodeFinder.getWechatRedEnvelopeNodes(node, name);
