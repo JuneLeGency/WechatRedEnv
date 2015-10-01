@@ -54,8 +54,8 @@ public class WechatAccessService extends AccessibilityService {
         AccessibilityServiceInfo accessibilityServiceInfo = getServiceInfo();
         if (accessibilityServiceInfo == null)
             accessibilityServiceInfo = new AccessibilityServiceInfo();
-//        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
-        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED | AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
+        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
+//        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED | AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED | AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         accessibilityServiceInfo.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
         accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name};
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;

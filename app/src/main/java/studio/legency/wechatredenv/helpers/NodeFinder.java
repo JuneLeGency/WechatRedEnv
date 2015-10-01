@@ -21,7 +21,7 @@ import studio.legency.wechatredenv.configs.WechatInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
 
 /**
- * 18 以上 可以用ID搜索
+ * api 18 以上 可以用ID搜索
  * 14 以上可以用 名称搜索
  * Created by Administrator on 2015/9/30.
  */
@@ -38,18 +38,11 @@ public class NodeFinder {
     String wechat_open_env_button_symbol;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    public static AccessibilityNodeInfo getWechatRedEnvelopeOpenDetailNode(AccessibilityNodeInfo info) {
+    public AccessibilityNodeInfo getWechatRedEnvelopeOpenDetailNode(AccessibilityNodeInfo info) {
         if (info == null)
             return null;
-        List<AccessibilityNodeInfo> list = info.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/aqx");
-        AccessibilityNodeInfo tempNode = null;
-        for (int i = 0; i < list.size(); i++) {
-            tempNode = list.get(i);
-            if ("android.widget.TextView".equals(tempNode.getClassName()) && tempNode.isVisibleToUser()) {
-                return tempNode;
-            }
-        }
-        return null;
+        AccessibilityNodeInfo opend_empty = findNodeInfoOneByText(info, "手慢了", true);
+        return opend_empty;
     }
 
     /**
@@ -79,6 +72,7 @@ public class NodeFinder {
     }
 
     /**
+     * 获取微信红包的节点信息
      * @param node
      * @param name
      * @return
@@ -180,5 +174,34 @@ public class NodeFinder {
             resultList = node.findAccessibilityNodeInfosByText(text);
         }
         return resultList;
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public void debugNode(AccessibilityNodeInfo info) {
+        if (info.getChildCount() == 0) {
+            LogUtils.d( "child widget");
+            showInfo(info);
+        } else {
+            LogUtils.d("info");
+            showInfo(info);
+            for (int i = 0; i < info.getChildCount(); i++) {
+                if(info.getChild(i)!=null){
+                    debugNode(info.getChild(i));
+                }
+            }
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private void showInfo(AccessibilityNodeInfo info){
+        LogUtils.d("id:" + info.getViewIdResourceName());
+        LogUtils.d("text:" + info.getText());
+        LogUtils.d("class:" + info.getClassName());
+    }
+
+    public AccessibilityNodeInfo getWechatRedEnvelopeCloseNode(AccessibilityNodeInfo nodeInfo) {
+        if (nodeInfo == null)
+            return null;
+        AccessibilityNodeInfo opend_empty = findNodeInfoOneById(nodeInfo, WechatInfo.close_btn_id, true);
+        return opend_empty;
     }
 }

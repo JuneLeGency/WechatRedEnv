@@ -30,8 +30,8 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="ANDROID.INTENT.ACTION.MAIN"></action>
-                <category android:name="ANDROID.INTENT.CATEGORY.LAUNCHER"></category>
+                <action android:name="android.intent.action.MAIN"></action>
+                <category android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
 
