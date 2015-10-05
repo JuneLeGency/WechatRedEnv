@@ -28,6 +28,11 @@ android {
     }
 
     buildTypes {
+
+        debug{
+            debuggable true
+            signingConfig signingConfigs.release
+        }
         view_test {
             minifyEnabled false
             debuggable true
