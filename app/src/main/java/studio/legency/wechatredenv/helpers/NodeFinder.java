@@ -194,8 +194,10 @@ public class NodeFinder {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void showInfo(AccessibilityNodeInfo info){
         LogUtils.d("id:" + info.getViewIdResourceName());
+        LogUtils.d("parent:"+info.getParent() == null ? "null" : info.getParent().getClassName());
         LogUtils.d("text:" + info.getText());
         LogUtils.d("class:" + info.getClassName());
+        LogUtils.d("hash:" + info.hashCode());
     }
 
     public AccessibilityNodeInfo getWechatRedEnvelopeCloseNode(AccessibilityNodeInfo nodeInfo) {

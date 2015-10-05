@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils;
+import android.util.Log;
+
+import com.apkfuns.logutils.LogUtils;
 
 import studio.legency.wechatredenv.services.WechatAccessService_;
 
@@ -22,6 +25,7 @@ public class AccessibilityServiceHelper {
         try {
             accessibilityEnabled = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);
         } catch (SettingNotFoundException e) {
+            LogUtils.e("setting not found");
         }
         TextUtils.SimpleStringSplitter mStringColonSplitter = new TextUtils.SimpleStringSplitter(':');
         if (accessibilityEnabled == 1) {
@@ -37,7 +41,7 @@ public class AccessibilityServiceHelper {
                 }
             }
         } else {
-            // Log.v(TAG, "***ACCESSIBILIY IS DISABLED***");
+            LogUtils.e("ACCESSIBILIY IS DISABLED");
         }
 
         return accessibilityFound;
