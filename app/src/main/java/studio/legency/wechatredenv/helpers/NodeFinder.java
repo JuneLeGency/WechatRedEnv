@@ -179,10 +179,9 @@ public class NodeFinder {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     public void debugNode(AccessibilityNodeInfo info) {
         if (info.getChildCount() == 0) {
-            LogUtils.d( "child widget");
             showInfo(info);
         } else {
-            LogUtils.d("info");
+            LogUtils.d("parent:");
             showInfo(info);
             for (int i = 0; i < info.getChildCount(); i++) {
                 if(info.getChild(i)!=null){
@@ -193,11 +192,12 @@ public class NodeFinder {
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
     private void showInfo(AccessibilityNodeInfo info){
+        LogUtils.d("------------------------" );
         LogUtils.d("id:" + info.getViewIdResourceName());
-        LogUtils.d("parent:"+info.getParent() == null ? "null" : info.getParent().getClassName());
-        LogUtils.d("text:" + info.getText());
         LogUtils.d("class:" + info.getClassName());
+        LogUtils.d("text:" + info.getText());
         LogUtils.d("hash:" + info.hashCode());
+        LogUtils.d("------------------------" );
     }
 
     public AccessibilityNodeInfo getWechatRedEnvelopeCloseNode(AccessibilityNodeInfo nodeInfo) {

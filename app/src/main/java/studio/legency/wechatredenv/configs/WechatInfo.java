@@ -14,7 +14,7 @@ public class WechatInfo {
     static public String open_env_button_id = "com.tencent.mm:id/aww";
     static public String money_info_id = "com.tencent.mm:id/aub";
     static public String back_button_id = "com.tencent.mm:id/f4";
-    static public String title_id = "com.tencent.mm:id/eo";
+    static public String title_id = "com.tencent.mm:id/ew";
     static public String close_btn_id = "com.tencent.mm:id/awr";
 
 

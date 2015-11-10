@@ -26,6 +26,7 @@ public class WechatAccessService extends AccessibilityService {
 
     @Bean
     WechatEventHelper wechatEventHelper;
+
     private PowerManager.WakeLock lock;
 
     @Override

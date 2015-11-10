@@ -41,7 +41,7 @@ public class WechatEventHelper {
     Setting_ setting_;
 
     public void handleEvent(AccessibilityEvent event) {
-        LogUtils.d(event);
+//        LogUtils.d(event);
         if(Common.is_view_test()){
             if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED||
                     event.getEventType() ==  AccessibilityEvent.TYPE_VIEW_CLICKED){
@@ -136,10 +136,11 @@ public class WechatEventHelper {
     public void handleChatPage(AccessibilityNodeInfo node) {
         if (node == null)
             return;
-        AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneById(node, WechatInfo.title_id, true);
+//        AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneById(node, WechatInfo.title_id, true);
+        AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneByText(node,"李琛",true);
         if (title == null) {
             LogUtils.d("不在聊天页面返回");
-            return;
+//            return;
         }
         String name = title.getText().toString();
         LogUtils.d("当前在" + name + "页面");
