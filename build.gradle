@@ -17,5 +17,8 @@ allprojects {
     repositories {
         jcenter()
         mavenLocal()
+        maven {
+            url "http://maven.bughd.com/public"
+        }
     }
 }

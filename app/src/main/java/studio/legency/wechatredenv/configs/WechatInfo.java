@@ -1,5 +1,7 @@
 package studio.legency.wechatredenv.configs;
 
+import io.paperdb.Paper;
+
 /**
  * Created by Administrator on 2015/9/30.
  */
@@ -29,58 +31,62 @@ public class WechatInfo {
      * ids
      */
 
-    /**
-     * 聊天页 红包id
-     */
-    static public String chat_red_env_id = "com.tencent.mm:id/ys1";
-
-    /**
-     * 打开红包按钮id
-     */
-    static public String open_env_button_id = "com.tencent.mm:id/aww1";
-
-    /**
-     * 红包金额信息
-     */
-    static public String money_info_id = "com.tencent.mm:id/aub1";
-
-    /**
-     * 微信 红包详情页 返回按钮ID
-     */
-    static public String back_button_id = "com.tencent.mm:id/fb1";
-
-    /**
-     * 聊天页标题
-     */
-    static public String chat_title_id = "com.tencent.mm:id/ew1";
-
-    static public String close_btn_id = "com.tencent.mm:id/awr1";
-
 //    /**
 //     * 聊天页 红包id
 //     */
-//    static public String chat_red_env_id = "com.tencent.mm:id/ys";
+//    static public String chat_red_env_id = "com.tencent.mm:id/ys1";
 //
 //    /**
 //     * 打开红包按钮id
 //     */
-//    static public String open_env_button_id = "com.tencent.mm:id/aww";
+//    static public String open_env_button_id = "com.tencent.mm:id/aww1";
 //
 //    /**
 //     * 红包金额信息
 //     */
-//    static public String money_info_id = "com.tencent.mm:id/aub";
+//    static public String money_info_id = "com.tencent.mm:id/aub1";
 //
 //    /**
 //     * 微信 红包详情页 返回按钮ID
 //     */
-//    static public String back_button_id = "com.tencent.mm:id/fb";
+//    static public String back_button_id = "com.tencent.mm:id/fb1";
 //
 //    /**
 //     * 聊天页标题
 //     */
-//    static public String chat_title_id = "com.tencent.mm:id/ew";
+//    static public String chat_title_id = "com.tencent.mm:id/ew1";
 //
-//    static public String close_btn_id = "com.tencent.mm:id/awr";
+//    static public String close_btn_id = "com.tencent.mm:id/awr1";
+
+    /**
+     * 聊天页 红包id
+     */
+    static public String chat_red_env_id = "com.tencent.mm:id/ys";
+
+    /**
+     * 打开红包按钮id
+     */
+    static public String open_env_button_id = "com.tencent.mm:id/aww";
+
+    /**
+     * 红包金额信息 
+     */
+    static public String money_info_id = "com.tencent.mm:id/b02";
+
+    /**
+     * 微信 红包详情页 返回按钮ID
+     */
+    static public String back_button_id = "com.tencent.mm:id/fb";
+
+    /**
+     * 聊天页标题
+     */
+    static public String chat_title_id = "com.tencent.mm:id/ew";
+
+    static public String close_btn_id = "com.tencent.mm:id/awr";
+
+    void init(){
+
+    }
 
 }
