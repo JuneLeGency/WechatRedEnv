@@ -66,7 +66,7 @@ public class WechatInfo {
     /**
      * 打开红包按钮id
      */
-    static public String open_env_button_id = "com.tencent.mm:id/aww";
+    static public String open_env_button_id = "com.tencent.mm:id/b2m";
 
     /**
      * 红包金额信息 
