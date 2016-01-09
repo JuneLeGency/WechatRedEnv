@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">微信抢红包</string>
     <string name="accessibility_description">微信快速抢红包插件，不会搜集信息只作为辅助快捷抢红包助手</string>
+    <string name="message.version">已经对接 微信6.3.8 客户端</string>
 </resources>

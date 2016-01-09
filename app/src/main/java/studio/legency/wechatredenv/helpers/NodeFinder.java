@@ -30,10 +30,13 @@ public class NodeFinder {
 
     @RootContext
     Context context;
+
     @StringRes
     String wechat_chat_env_symbol;
+
     @Pref
     Setting_ setting_;
+
     @StringRes
     String wechat_open_env_button_symbol;
 
@@ -73,6 +76,7 @@ public class NodeFinder {
 
     /**
      * 获取微信红包的节点信息
+     *
      * @param node
      * @param name
      * @return
@@ -140,9 +144,11 @@ public class NodeFinder {
     }
 
     /**
-     * @param node
-     * @param id
-     * @param text
+     * 查找 并返回第一个节点信息
+     *
+     * @param node  被查找的节点
+     * @param id    使用 node id 检索
+     * @param text  使用 字符检索
      * @param first true first false last
      * @return
      */
@@ -166,12 +172,17 @@ public class NodeFinder {
 
     public List<AccessibilityNodeInfo> findNodeInfo(AccessibilityNodeInfo node, String id, String text) {
         List<AccessibilityNodeInfo> resultList = new ArrayList<>();
+        boolean id_failed = false;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && !TextUtils.isEmpty(id)) {
             resultList = node.findAccessibilityNodeInfosByViewId(id);
+            id_failed = NodeFindUtil.isEmptyCollection(resultList);
         }
 //
         if (resultList == null || resultList.isEmpty() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && !TextUtils.isEmpty(text)) {
             resultList = node.findAccessibilityNodeInfosByText(text);
+            if (id_failed && !NodeFindUtil.isEmptyCollection(resultList)) {
+                LogUtils.d("id：" + id + " 已经失效 但是 " + text + "可用");
+            }
         }
         return resultList;
     }
@@ -184,20 +195,21 @@ public class NodeFinder {
             LogUtils.d("parent:");
             showInfo(info);
             for (int i = 0; i < info.getChildCount(); i++) {
-                if(info.getChild(i)!=null){
+                if (info.getChild(i) != null) {
                     debugNode(info.getChild(i));
                 }
             }
         }
     }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-    private void showInfo(AccessibilityNodeInfo info){
-        LogUtils.d("------------------------" );
+    private void showInfo(AccessibilityNodeInfo info) {
+        LogUtils.d("------------------------");
         LogUtils.d("id:" + info.getViewIdResourceName());
         LogUtils.d("class:" + info.getClassName());
         LogUtils.d("text:" + info.getText());
         LogUtils.d("hash:" + info.hashCode());
-        LogUtils.d("------------------------" );
+        LogUtils.d("------------------------");
     }
 
     public AccessibilityNodeInfo getWechatRedEnvelopeCloseNode(AccessibilityNodeInfo nodeInfo) {
