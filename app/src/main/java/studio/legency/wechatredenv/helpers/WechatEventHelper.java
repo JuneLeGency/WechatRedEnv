@@ -15,7 +15,6 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.List;
 
-import studio.legency.wechatredenv.BuildConfig;
 import studio.legency.wechatredenv.configs.Setting_;
 import studio.legency.wechatredenv.configs.WechatInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
@@ -35,16 +34,18 @@ public class WechatEventHelper {
 
     @Bean
     Common common;
+
     @StringRes
     String wechat_notification_symbol;
+
     @Pref
     Setting_ setting_;
 
     public void handleEvent(AccessibilityEvent event) {
 //        LogUtils.d(event);
-        if(Common.is_view_test()){
-            if(event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED||
-                    event.getEventType() ==  AccessibilityEvent.TYPE_VIEW_CLICKED){
+        if (Common.is_view_test()) {
+            if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED ||
+                    event.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
                 AccessibilityNodeInfo nodeInfo = event.getSource();
                 if (nodeInfo == null) return;
                 nodeFinder.debugNode(nodeInfo);
@@ -68,6 +69,7 @@ public class WechatEventHelper {
                 LogUtils.d("红包外页");
                 handleLuckyMoneyReceivePage(nodeInfo);
             } else if (WechatInfo.env_detail_page.equals(currentActivityName)) {
+                LogUtils.d("红包详情页");
                 handleLuckyMoneyDetailPage(nodeInfo);
             } else {
                 handleChatPage(nodeInfo);
@@ -84,15 +86,20 @@ public class WechatEventHelper {
         if (node == null)
             return;
         CharSequence money = nodeFinder.getWechatRedEnvelopeMoney(node);
-        if (setting_.use_His().get())
+        if (setting_.use_His().get()) {
+            LogUtils.d("详情页 返回");
             goBack(node);
-        else
+        } else
             common.goHome();
     }
 
     public void goBack(AccessibilityNodeInfo node) {
         AccessibilityNodeInfo backButton = nodeFinder.getWechatRedBack(node);
         clickNode(backButton);
+        if (backButton == null) {
+            LogUtils.d("无法找到详情页的返回按钮 进入主界面");
+            common.goHome();
+        }
     }
 
     public void goMessage(AccessibilityNodeInfo node) {
@@ -118,7 +125,6 @@ public class WechatEventHelper {
     }
 
 
-
     private void handleNotificationChange(AccessibilityEvent event) {
 
         if (event.getParcelableData() instanceof Notification) {
@@ -133,17 +139,23 @@ public class WechatEventHelper {
         }
     }
 
+    /**
+     * 未知事件  都假设在 聊天页  尝试获取 红包数据
+     *
+     * @param node
+     */
     public void handleChatPage(AccessibilityNodeInfo node) {
         if (node == null)
             return;
-//        AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneById(node, WechatInfo.title_id, true);
-        AccessibilityNodeInfo title = nodeFinder.findNodeInfoOneByText(node,"李琛",true);
+        AccessibilityNodeInfo title = NodeFindUtil.with(node).id(WechatInfo.chat_title_id).clazz("android.widget.TextView").findFirst();
+//        AccessibilityNodeInfo title = NodeFindUtil.with(node).text("cici~ honey").clazz("android.widget.TextView").findFirst();
+        String name = "";
         if (title == null) {
-            LogUtils.d("不在聊天页面返回");
-//            return;
+            LogUtils.d("可能不在聊天详情页面");
+        } else {
+            name = title.getText().toString();
+            LogUtils.d("当前在" + name + "页面");
         }
-        String name = title.getText().toString();
-        LogUtils.d("当前在" + name + "页面");
         List<AccessibilityNodeInfo> close_envs = nodeFinder.getWechatRedEnvelopeNodes(node, name);
         if (close_envs != null) {
             LogUtils.d("发现" + close_envs.size() + "个新红包");

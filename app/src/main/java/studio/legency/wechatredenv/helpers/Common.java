@@ -5,8 +5,9 @@ import android.content.Intent;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import studio.legency.wechatredenv.BuildConfig;
+import studio.legency.wechatredenv.configs.Setting_;
 import studio.legency.wechatredenv.configs.WechatInfo;
 
 /**
@@ -18,8 +19,13 @@ public class Common {
     @RootContext
     Context context;
 
-    static public boolean is_view_test(){
-        return BuildConfig.BUILD_TYPE.equals("view_test");
+    @Pref
+    static
+    Setting_ setting_;
+
+    static public boolean is_view_test() {
+        return setting_.testMode().get();
+//        return BuildConfig.BUILD_TYPE.equals("view_test");
     }
 
     public void goHome() {

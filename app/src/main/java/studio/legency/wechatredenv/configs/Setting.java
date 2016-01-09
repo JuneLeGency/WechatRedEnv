@@ -11,4 +11,7 @@ public interface Setting {
 
     @DefaultBoolean(true)
     boolean use_His();
+
+    @DefaultBoolean(false)
+    boolean testMode();
 }

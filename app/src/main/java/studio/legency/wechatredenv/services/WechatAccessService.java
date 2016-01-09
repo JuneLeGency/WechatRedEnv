@@ -15,7 +15,6 @@ import org.androidannotations.annotations.EService;
 
 import studio.legency.wechatredenv.configs.WechatInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
-import studio.legency.wechatredenv.helpers.Common;
 import studio.legency.wechatredenv.helpers.WechatEventHelper;
 
 /**
@@ -57,14 +56,10 @@ public class WechatAccessService extends AccessibilityService {
         if (accessibilityServiceInfo == null)
             accessibilityServiceInfo = new AccessibilityServiceInfo();
 //        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPES_ALL_MASK;
-        if(Common.is_view_test()){
-            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_VIEW_LONG_CLICKED |
-                    AccessibilityEvent.TYPE_VIEW_CLICKED;
-        }else{
-            accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED |
-                    AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED |
-                    AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED ;
-        }
+        accessibilityServiceInfo.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED |
+                AccessibilityEvent.TYPE_NOTIFICATION_STATE_CHANGED |
+                AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_VIEW_LONG_CLICKED |
+                AccessibilityEvent.TYPE_VIEW_CLICKED;
         accessibilityServiceInfo.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
         accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name};
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;
