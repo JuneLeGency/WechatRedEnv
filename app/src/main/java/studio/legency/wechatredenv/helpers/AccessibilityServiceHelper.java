@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.apkfuns.logutils.LogUtils;
 
-import studio.legency.wechatredenv.services.WechatAccessService_;
+import studio.legency.wechatredenv.services.AccessService_;
 
 public class AccessibilityServiceHelper {
 
@@ -20,7 +19,7 @@ public class AccessibilityServiceHelper {
     // To check if service is enabled
     public static boolean isAccessibilitySettingsOn(Context context) {
         int accessibilityEnabled = 0;
-        final String service = context.getPackageName() + "/" + WechatAccessService_.class.getName();
+        final String service = context.getPackageName() + "/" + AccessService_.class.getName();
         boolean accessibilityFound = false;
         try {
             accessibilityEnabled = Settings.Secure.getInt(context.getApplicationContext().getContentResolver(), android.provider.Settings.Secure.ACCESSIBILITY_ENABLED);

@@ -3,6 +3,7 @@ package studio.legency.wechatredenv;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bugtags.library.Bugtags;
 import com.orm.SugarApp;
 
 import org.androidannotations.annotations.EApplication;
@@ -22,6 +23,7 @@ public class WechatEnvApp extends SugarApp {
         super.onCreate();
         Paper.init(this);
         FIR.init(this);
+        Bugtags.start("bbe1e5f34900d32dcd17678d91682d97", this, Bugtags.BTGInvocationEventBubble);
         FIR.checkForUpdateInFIR("acc0748415b87fa329d4c149f3a01a04", new VersionCheckCallback() {
             @Override
             public void onSuccess(String versionJson) {

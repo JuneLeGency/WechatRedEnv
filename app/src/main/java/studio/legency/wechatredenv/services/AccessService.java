@@ -7,24 +7,32 @@ import android.content.Context;
 import android.os.Build;
 import android.os.PowerManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 import com.apkfuns.logutils.LogUtils;
 
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 
+import studio.legency.wechatredenv.configs.DingInfo;
 import studio.legency.wechatredenv.configs.WechatInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
+import studio.legency.wechatredenv.helpers.Common;
+import studio.legency.wechatredenv.helpers.DingEventHelper;
+import studio.legency.wechatredenv.helpers.NodeFinder;
 import studio.legency.wechatredenv.helpers.WechatEventHelper;
 
 /**
  * Created by Administrator on 2015/9/30.
  */
 @EService
-public class WechatAccessService extends AccessibilityService {
+public class AccessService extends AccessibilityService {
 
     @Bean
     WechatEventHelper wechatEventHelper;
+
+    @Bean
+    DingEventHelper dingEventHelper;
 
     private PowerManager.WakeLock lock;
 
@@ -61,7 +69,7 @@ public class WechatAccessService extends AccessibilityService {
                 AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_VIEW_LONG_CLICKED |
                 AccessibilityEvent.TYPE_VIEW_CLICKED;
         accessibilityServiceInfo.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
-        accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name};
+        accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name, DingInfo.package_name};
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;
         accessibilityServiceInfo.notificationTimeout = 10;
         setServiceInfo(accessibilityServiceInfo);
@@ -72,9 +80,30 @@ public class WechatAccessService extends AccessibilityService {
 		 */
     }
 
+    @Bean
+    NodeFinder nodeFinder;
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        wechatEventHelper.handleEvent(event);
+        if (event == null) {
+            return;
+        }
+
+        if (Common.is_view_test()) {
+            if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED ||
+                    event.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                AccessibilityNodeInfo nodeInfo = event.getSource();
+                if (nodeInfo == null) return;
+                nodeFinder.debugNode(nodeInfo);
+            }
+            return;
+        }
+
+        if (WechatInfo.package_name.equals(event.getPackageName())) {
+            wechatEventHelper.handleEvent(event);
+        } else {
+            dingEventHelper.handleEvent(event);
+        }
     }
 
     @Override

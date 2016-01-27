@@ -1,9 +1,11 @@
 package studio.legency.wechatredenv.helpers;
 
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class NodeFindUtil {
     private AccessibilityNodeInfo nodeInfo;
 
     private CharSequence className;
+
+    private boolean useCustom;
 
     public NodeFindUtil(AccessibilityNodeInfo nodeInfo) {
         this.nodeInfo = nodeInfo;
@@ -47,6 +51,15 @@ public class NodeFindUtil {
     }
 
     public List<AccessibilityNodeInfo> find() {
+        if (useCustom) {
+            return findCChildren();
+        } else {
+            return findByApi();
+        }
+    }
+
+    @Nullable
+    private List<AccessibilityNodeInfo> findByApi() {
         List<AccessibilityNodeInfo> nodeInfoList = null;
         if (nodeInfo != null) {
 
@@ -54,13 +67,13 @@ public class NodeFindUtil {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
                     nodeInfoList = nodeInfo.findAccessibilityNodeInfosByViewId(id);
                 }
-                filter(nodeInfoList);
+                filterResult(nodeInfoList);
             }
 
             if (isEmptyCollection(nodeInfoList)) {
                 if (!TextUtils.isEmpty(text)) {
                     nodeInfoList = nodeInfo.findAccessibilityNodeInfosByText(text);
-                    filter(nodeInfoList);
+                    filterResult(nodeInfoList);
                 }
             }
         }
@@ -69,12 +82,20 @@ public class NodeFindUtil {
 
     public AccessibilityNodeInfo findFirst() {
         List<AccessibilityNodeInfo> nodeInfoList = find();
-        if (isEmptyCollection(nodeInfoList)) return null;
-        else return
-                nodeInfoList.get(0);
+        if (isEmptyCollection(nodeInfoList)) {
+            return null;
+        } else {
+            return nodeInfoList.get(0);
+        }
     }
 
-    void filter(List<AccessibilityNodeInfo> nodes) {
+    public String firstText() {
+        AccessibilityNodeInfo node = findFirst();
+        if (node == null || TextUtils.isEmpty(node.getText())) return "";
+        else return (String) node.getText();
+    }
+
+    void filterResult(List<AccessibilityNodeInfo> nodes) {
         if (isEmptyCollection(nodes)) return;
         for (int i = nodes.size() - 1; i >= 0; i--) {
             AccessibilityNodeInfo node = nodes.get(i);
@@ -92,5 +113,28 @@ public class NodeFindUtil {
 
     public static boolean isEmptyCollection(Collection e) {
         return e == null || e.size() == 0;
+    }
+
+    private List<AccessibilityNodeInfo> findCChildren() {
+        List<AccessibilityNodeInfo> accessibilityNodeInfos = new ArrayList<>();
+        doFilterChildren(nodeInfo, accessibilityNodeInfos);
+        return accessibilityNodeInfos;
+    }
+
+    public NodeFindUtil useCustom() {
+        useCustom = true;
+        return this;
+    }
+
+    private void doFilterChildren(AccessibilityNodeInfo nodeInfo, List<AccessibilityNodeInfo> nodeInfos) {
+        int count = nodeInfo.getChildCount();
+        for (int i = 0; i < count; i++) {
+            AccessibilityNodeInfo n = nodeInfo.getChild(i);
+            if (n == null) continue;
+            if (isAvailableNode(n)) {
+                nodeInfos.add(n);
+            }
+            doFilterChildren(n, nodeInfos);
+        }
     }
 }

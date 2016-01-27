@@ -2,6 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 def AAVersion = '3.3.2'
 
+//bugtags {
+//    appKey 'bbe1e5f34900d32dcd17678d91682d97'  //这里是你的 appKey
+//    appSecret '2db856b2ef0cb1eea924347a349cd164'    //这里是你的 appSecret，管理员在设置页可以查看
+//}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -72,4 +77,6 @@ dependencies {
 
     compile 'io.paperdb:paperdb:1.1'
     compile 'im.fir:fir-sdk:latest.integration@aar'
+    //**重要**
+    compile 'com.bugtags.library:bugtags-lib:latest.integration'
 }
