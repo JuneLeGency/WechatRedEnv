@@ -61,12 +61,13 @@ public class WechatInfo {
     /**
      * 聊天页 红包id
      */
-    static public String chat_red_env_id = "com.tencent.mm:id/ys";
+    static public String chat_red_env_id = "com.tencent.mm:id/dq";
 
     /**
      * 打开红包按钮id
      */
-    static public String open_env_button_id = "com.tencent.mm:id/b2m";
+    static public String open_env_button_id = "com.tencent.mm:id/b2c";
+
 
     /**
      * 红包金额信息 
@@ -76,14 +77,14 @@ public class WechatInfo {
     /**
      * 微信 红包详情页 返回按钮ID
      */
-    static public String back_button_id = "com.tencent.mm:id/fb";
+    static public String back_button_id = "com.tencent.mm:id/c2m";
 
     /**
      * 聊天页标题
      */
     static public String chat_title_id = "com.tencent.mm:id/ew";
 
-    static public String close_btn_id = "com.tencent.mm:id/awr";
+    static public String close_btn_id = "com.tencent.mm:id/b2g";
 
     void init(){
 
