@@ -85,25 +85,31 @@ public class AccessService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        if (event == null) {
-            return;
-        }
 
-        if (Common.is_view_test()) {
-            if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED ||
-                    event.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
-                AccessibilityNodeInfo nodeInfo = event.getSource();
-                if (nodeInfo == null) return;
-                nodeFinder.debugNode(nodeInfo);
+        try {
+            if (event == null) {
+                return;
             }
-            return;
+
+            if (Common.is_view_test()) {
+                if (event.getEventType() == AccessibilityEvent.TYPE_VIEW_LONG_CLICKED ||
+                        event.getEventType() == AccessibilityEvent.TYPE_VIEW_CLICKED) {
+                    AccessibilityNodeInfo nodeInfo = event.getSource();
+                    if (nodeInfo == null) return;
+                    nodeFinder.debugNode(nodeInfo);
+                }
+                return;
+            }
+
+            if (WechatInfo.package_name.equals(event.getPackageName())) {
+                wechatEventHelper.handleEvent(event);
+            } else {
+                dingEventHelper.handleEvent(event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        if (WechatInfo.package_name.equals(event.getPackageName())) {
-            wechatEventHelper.handleEvent(event);
-        } else {
-            dingEventHelper.handleEvent(event);
-        }
     }
 
     @Override

@@ -44,6 +44,7 @@ public class NodeFinder {
     public AccessibilityNodeInfo getWechatRedEnvelopeOpenDetailNode(AccessibilityNodeInfo info) {
         if (info == null)
             return null;
+        NodeFindUtil.with(info).text("手慢了").text("红包已失效").hasResult();
         AccessibilityNodeInfo opend_empty = findNodeInfoOneByText(info, "手慢了", true);
         return opend_empty;
     }
@@ -92,8 +93,7 @@ public class NodeFinder {
             LogUtils.d("发现" + red_env_all.size() + "个红包");
             for (AccessibilityNodeInfo nodeInfo : red_env_all) {
                 AccessibilityNodeInfo node_env = nodeInfo;
-                LogUtils.d("find hashCode:" + name + node_env.hashCode());
-                if (!isOpened(name + node_env.hashCode())) {
+                if (!isOpened(node_env)) {
 //                    result.add(node_env);
                     return red_env_all;
                 } else {
@@ -108,16 +108,40 @@ public class NodeFinder {
     /**
      * TODO  如何在所有的hash 都相同的情况下判断当前的红包有没有被打开过 寻找标志位
      *
-     * @param hash
+     * @param node
      * @return
      */
-    boolean isOpened(String hash) {
+    boolean isOpened(AccessibilityNodeInfo node) {
         if (setting_.use_His().get()) {
-            List<WechatRedEnvHis> a = WechatRedEnvHis.find(WechatRedEnvHis.class, "hash = ?", "" + hash);
+            List<WechatRedEnvHis> a = WechatRedEnvHis.find(WechatRedEnvHis.class, "hash = ?", "" + nodeToHash(node));
             return (a != null && !a.isEmpty());
         } else {
             return false;
         }
+    }
+
+    public String nodeToHash(AccessibilityNodeInfo nodeInfo) {
+        String dialog = "unknown dialog";
+
+        try {
+            dialog = nodeInfo.getParent().getParent().getParent().getParent().getParent().getParent().getContentDescription().toString();
+        } catch (Exception e) {
+
+        }
+
+        String time = "unknown time";
+
+        String head_desc = "unknown head";
+        try {
+            AccessibilityNodeInfo relative = nodeInfo.getParent().getParent();
+            time = relative.getChild(0).getText().toString();
+            head_desc = relative.getChild(1).getContentDescription().toString();
+        } catch (Exception e) {
+
+        }
+        String r = dialog + " | " + time + " | " + head_desc + " | " + nodeInfo.hashCode();
+        LogUtils.d("红包标示:" + r);
+        return r;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

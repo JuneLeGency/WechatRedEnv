@@ -98,10 +98,8 @@ public class WechatEventHelper {
 
     private void handleLuckyMoneyReceivePage(AccessibilityNodeInfo nodeInfo) {
         nodeFinder.debugNode(nodeInfo);
-        AccessibilityNodeInfo nodeDetail = nodeFinder
-                .getWechatRedEnvelopeOpenDetailNode(nodeInfo);
-        if (nodeDetail != null) {// the red envelope already opened
-            LogUtils.d("手慢了,开过了群红包");
+        if (NodeFindUtil.with(nodeInfo).text("手慢了").text("红包已失效").hasResult()) {// the red envelope already opened
+            LogUtils.d("无效红包 手慢了,开过了群红包 等情况");
             AccessibilityNodeInfo close_btn = nodeFinder
                     .getWechatRedEnvelopeCloseNode(nodeInfo);
             clickNode(close_btn);
@@ -161,10 +159,8 @@ public class WechatEventHelper {
     }
 
     void openEnv(AccessibilityNodeInfo env, String name) {
-        int hash = env.hashCode();
         if (clickNode(env.getParent()) && setting_.use_His().get()) {
-            LogUtils.d("save hashCode:" + name + hash);
-            new WechatRedEnvHis(name + hash).save();
+            new WechatRedEnvHis(name + nodeFinder.nodeToHash(env)).save();
         }
 
     }
