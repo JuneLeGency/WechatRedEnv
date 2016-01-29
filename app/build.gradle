@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "studio.legency.wechatredenv"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 21
         versionCode 2
         versionName "2.0"
@@ -77,6 +77,10 @@ dependencies {
 
     compile 'io.paperdb:paperdb:1.1'
     compile 'im.fir:fir-sdk:latest.integration@aar'
+
+    compile 'com.github.qiujuer:genius:2.4.1'
     //**重要**
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
+
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
 }
