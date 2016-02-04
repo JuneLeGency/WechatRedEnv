@@ -34,7 +34,7 @@ android {
 
     buildTypes {
 
-        debug{
+        debug {
             debuggable true
             signingConfig signingConfigs.release
         }
@@ -83,4 +83,5 @@ dependencies {
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
 
     compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.github.bmelnychuk:atv:1.2.+'
 }

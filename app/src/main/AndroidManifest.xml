@@ -46,7 +46,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PackageActivity_"/>
+        <activity android:name=".activities.PackageActivity_"/>
+        <activity android:name=".activities.TestActivity_"/>
 
         <service
             android:name=".services.AccessService_"

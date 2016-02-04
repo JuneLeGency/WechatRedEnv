@@ -1,4 +1,4 @@
-package studio.legency.wechatredenv;
+package studio.legency.wechatredenv.activities;
 
 import android.app.Activity;
 import android.content.pm.PackageInfo;
@@ -15,6 +15,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import studio.legency.wechatredenv.R;
 
 /**
  * Created by lichen:) on 2016/2/4.

@@ -4,11 +4,13 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.PowerManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
@@ -20,8 +22,10 @@ import com.apkfuns.logutils.LogUtils;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EService;
 
+import studio.legency.wechatredenv.activities.TestActivity_;
 import studio.legency.wechatredenv.configs.DingInfo;
 import studio.legency.wechatredenv.configs.WechatInfo;
+import studio.legency.wechatredenv.data.NodeInfo;
 import studio.legency.wechatredenv.data.WechatRedEnvHis;
 import studio.legency.wechatredenv.helpers.Common;
 import studio.legency.wechatredenv.helpers.DingEventHelper;
@@ -106,7 +110,9 @@ public class AccessService extends AccessibilityService {
                     AccessibilityNodeInfo nodeInfo = event.getSource();
                     if (nodeInfo == null) return;
                     nodeFinder.debugNode(nodeInfo);
-                    showWindow(getRootParent(nodeInfo));
+                    AccessibilityNodeInfo rootNode = getRootParent(nodeInfo);
+                    TestActivity_.intent(this).nodeInfo(getNode(rootNode)).flags(Intent.FLAG_ACTIVITY_NEW_TASK).start();
+                    showWindow(rootNode);
                 }
                 return;
             }
@@ -119,6 +125,24 @@ public class AccessService extends AccessibilityService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    NodeInfo getNode(AccessibilityNodeInfo nodeInfo) {
+        NodeInfo node = new NodeInfo();
+        node.setClazz(nodeInfo.getClassName().toString());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            node.setId(nodeInfo.getViewIdResourceName());
+        }
+        if (!TextUtils.isEmpty(nodeInfo.getText()))
+            node.setText(nodeInfo.getText().toString());
+        int count = nodeInfo.getChildCount();
+        for (int i = 0; i < count; i++) {
+            AccessibilityNodeInfo n = nodeInfo.getChild(i);
+            if (n != null) {
+                node.addChild(getNode(n));
+            }
+        }
+        return node;
     }
 
     private AccessibilityNodeInfo getRootParent(AccessibilityNodeInfo nodeInfo) {
