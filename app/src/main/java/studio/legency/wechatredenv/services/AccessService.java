@@ -106,7 +106,7 @@ public class AccessService extends AccessibilityService {
                     AccessibilityNodeInfo nodeInfo = event.getSource();
                     if (nodeInfo == null) return;
                     nodeFinder.debugNode(nodeInfo);
-                    showWindow(nodeInfo.getParent().getParent());
+                    showWindow(getRootParent(nodeInfo));
                 }
                 return;
             }
@@ -119,6 +119,14 @@ public class AccessService extends AccessibilityService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private AccessibilityNodeInfo getRootParent(AccessibilityNodeInfo nodeInfo) {
+        AccessibilityNodeInfo parent = nodeInfo.getParent();
+        if (parent != null)
+            return getRootParent(parent);
+        else
+            return nodeInfo;
     }
 
     boolean inType(int[] types, int type) {
