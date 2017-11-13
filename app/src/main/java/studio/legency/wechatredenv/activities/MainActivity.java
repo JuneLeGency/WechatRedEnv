@@ -97,4 +97,9 @@ public class MainActivity extends Activity {
     void clear_data() {
         WechatRedEnvHis.deleteAll(WechatRedEnvHis.class);
     }
+
+    @Click
+    void select_appClicked() {
+        PackageActivity_.intent(this).start();
+    }
 }

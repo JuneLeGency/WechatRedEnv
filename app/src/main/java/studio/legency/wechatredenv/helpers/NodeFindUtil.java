@@ -1,13 +1,13 @@
 package studio.legency.wechatredenv.helpers;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityNodeInfo;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by lichen:) on 2016/1/9.
@@ -88,7 +88,15 @@ public class NodeFindUtil {
         return nodeInfoList;
     }
 
-    public AccessibilityNodeInfo findFirst() {
+    public NodeFindUtil first(){
+        return with(findFirst());
+    }
+
+    public AccessibilityNodeInfo get(){
+        return nodeInfo;
+    }
+
+    AccessibilityNodeInfo findFirst() {
         List<AccessibilityNodeInfo> nodeInfoList = find();
         if (isEmptyCollection(nodeInfoList)) {
             return null;
@@ -125,7 +133,7 @@ public class NodeFindUtil {
 
     private List<AccessibilityNodeInfo> findCChildren() {
         List<AccessibilityNodeInfo> accessibilityNodeInfos = new ArrayList<>();
-        doFilterChildren(nodeInfo, accessibilityNodeInfos);
+        filterChildrenInner(nodeInfo, accessibilityNodeInfos);
         return accessibilityNodeInfos;
     }
 
@@ -134,7 +142,7 @@ public class NodeFindUtil {
         return this;
     }
 
-    private void doFilterChildren(AccessibilityNodeInfo nodeInfo, List<AccessibilityNodeInfo> nodeInfos) {
+    private void filterChildrenInner(AccessibilityNodeInfo nodeInfo, List<AccessibilityNodeInfo> nodeInfos) {
         int count = nodeInfo.getChildCount();
         for (int i = 0; i < count; i++) {
             AccessibilityNodeInfo n = nodeInfo.getChild(i);
@@ -142,7 +150,7 @@ public class NodeFindUtil {
             if (isAvailableNode(n)) {
                 nodeInfos.add(n);
             }
-            doFilterChildren(n, nodeInfos);
+            filterChildrenInner(n, nodeInfos);
         }
     }
 }

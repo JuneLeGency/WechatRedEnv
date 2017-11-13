@@ -29,3 +29,4 @@ Thumbs.db
 .idea/gradle.xml
 .idea/runConfigurations.xml
 build/intermediates/dex-cache/cache.xml
+/build/

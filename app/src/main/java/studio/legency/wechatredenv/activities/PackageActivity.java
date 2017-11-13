@@ -1,66 +1,104 @@
 package studio.legency.wechatredenv.activities;
 
-import android.app.Activity;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import org.androidannotations.annotations.AfterInject;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.EViewGroup;
+import org.androidannotations.annotations.RootContext;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import studio.legency.wechatredenv.R;
+import studio.legency.wechatredenv.adapters.RecyclerViewAdapterBase;
 
 /**
- * Created by lichen:) on 2016/2/4.
+ * @author
  */
 @EActivity(R.layout.activity_package)
 public class PackageActivity extends Activity {
 
     @ViewById
-    ListView list;
+    RecyclerView recyclerView;
+
+    @Bean
+    AppAdapter mAdapter;
 
     @AfterViews
     void init() {
-        List<PackageInfo> p = getPackageManager().getInstalledPackages(PackageManager.GET_ACTIVITIES);
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
 
+    @AfterInject
+    @Background
+    void getPackage() {
+        List<PackageInfo> packages = getPackageManager().getInstalledPackages(PackageManager.GET_META_DATA);
+        mAdapter.setItems(packages);
+        changes();
+    }
+
+    @UiThread
+    void changes() {
+        mAdapter.notifyDataSetChanged();
     }
 }
 
 @EBean
-class AppAdapter extends BaseAdapter {
+class AppAdapter extends RecyclerViewAdapterBase<PackageInfo, AppView> {
 
-    List<PackageInfo> packageInfos = new ArrayList<>();
+    @RootContext
+    Context context;
 
-    public void setPackageInfos(List<PackageInfo> packageInfos) {
-        this.packageInfos = packageInfos;
+    @Override
+    protected AppView onCreateItemView(ViewGroup parent, int viewType) {
+        return AppView_.build(context);
     }
 
     @Override
-    public int getCount() {
-        return packageInfos.size();
+    protected void bindData(AppView view, PackageInfo packageInfo) {
+        view.bind(packageInfo);
     }
 
-    @Override
-    public PackageInfo getItem(int position) {
-        return packageInfos.get(position);
+}
+
+@EViewGroup(R.layout.item_app)
+class AppView extends RelativeLayout {
+
+    @ViewById
+    ImageView app_icon;
+
+    @ViewById
+    TextView app_name;
+
+    @ViewById
+    TextView app_package;
+
+    public AppView(Context context) {
+        super(context);
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
+    public AppView(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        PackageInfo packageInfo = getItem(position);
-        return null;
+    void bind(PackageInfo packageInfo) {
+        app_icon.setImageDrawable(getContext().getPackageManager().getApplicationIcon(packageInfo.applicationInfo));
+        app_name.setText(getContext().getPackageManager().getApplicationLabel(packageInfo.applicationInfo));
+        app_package.setText(packageInfo.packageName);
     }
 }

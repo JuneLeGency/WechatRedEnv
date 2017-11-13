@@ -54,6 +54,13 @@
                 android:layout_gravity="center_horizontal"
                 android:text="清空数据库"/>
 
+            <Button
+                android:id="@+id/select_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="选择应用"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

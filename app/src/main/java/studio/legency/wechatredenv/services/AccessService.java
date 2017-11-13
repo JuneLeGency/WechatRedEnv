@@ -80,7 +80,7 @@ public class AccessService extends AccessibilityService {
 //                AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED | AccessibilityEvent.TYPE_VIEW_LONG_CLICKED |
 //                AccessibilityEvent.TYPE_VIEW_CLICKED;
         accessibilityServiceInfo.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
-        accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name, DingInfo.package_name};
+        accessibilityServiceInfo.packageNames = new String[]{WechatInfo.package_name, DingInfo.package_name,"com.android.packageinstaller"};
         accessibilityServiceInfo.feedbackType = AccessibilityServiceInfo.FEEDBACK_ALL_MASK;
         accessibilityServiceInfo.notificationTimeout = 10;
         setServiceInfo(accessibilityServiceInfo);
